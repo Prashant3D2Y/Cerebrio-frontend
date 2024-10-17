@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <meta name="description" content="Web site created using create-react-app" />
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <title>React App</title>
+    <style>
+      #chatbot-container {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 330px;
+        height: 455px;
+        border: 1px solid #363333;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        padding: 10px;
+        font-size: 14px;
+        display: none; /* Initially hidden */
+      }
+
+      #chat-toggle-btn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 70px;
+        height: 70px;
+        font-size: 24px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      }
+
+      /* Chatbot header with text and close button */
+      .chatbot-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 10px;
+      }
+
+      /* Close button styles */
+      .close-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+        line-height: 25px;
+        text-align: center;
+        cursor: pointer;
+      }
+
+      /* Chat messages container */
+      #chat-messages {
+        font-size: 15px;
+        height: calc(100% - 110px); /* Adjust to leave space for input container and padding */
+        overflow-y: auto;
+        margin-bottom: 10px; /* Space between messages and input */
+      }
+
+      /* Style for individual messages */
+      .message {
+        margin: 5px 0;
+        padding: 8px;
+        border-radius: 5px;
+        max-width: 80%;
+        word-wrap: break-word;
+      }
+
+      /* User's message (right-aligned) */
+      .user-message {
+        background-color: #dcf8c6;
+        align-self: flex-end;
+        text-align: right;
+      }
+
+      /* Bot's message (left-aligned) */
+      .bot-message {
+        background-color: #f1f0f0;
+        align-self: flex-start;
+        text-align: left;
+      }
+
+      /* Flex container for messages */
+      .message-container {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* Input container styles */
+      .input-container {
+        position: absolute;
+        bottom: 10px; /* Small distance from the bottom of the chatbot */
+        left: 0;
+        right: 0;
+        padding: 0 10px;
+        display: flex;
+        align-items: center;
+      }
+
+      /* Input box font size */
+      #chat-input {
+        font-size: 14px;
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        margin-right: 5px;
+      }
+
+      /* Send button styles */
+      .send-btn {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 8px;
+        cursor: pointer;
+      }
+
+      .send-btn img {
+        width: 20px;
+        height: auto;
+      }
+
+      /* Separator for the heading */
+      .heading-separator {
+        margin: 2px 0 10px 0;
+        border: 0;
+        height: 1px;
+        background-color: #ddd;
+      }
+    </style>
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+
+    <!-- Chatbot Toggle Button (Icon with Circular GIF) -->
+    <button id="chat-toggle-btn" onclick="toggleChat()" draggable="true" style="border: none; background: none; position: fixed; right: 1%; bottom: 9%;">
+      <img src="%PUBLIC_URL%/11184177.gif" alt="Chat" width="70" height="70" style="border-radius: 50%; object-fit: cover;">
+    </button>
+
+
+    <!-- Chatbot UI -->
+    <div id="chatbot-container">
+      
+      <!-- Chatbot Header with Title and Close Button -->
+      <div class="chatbot-header">
+        <h3>Chatbot</h3>
+        <button class="close-btn" onclick="toggleChat()">×</button> <!-- Close Button -->
+      </div>
+
+      <!-- Separator line below the heading -->
+      <hr class="heading-separator" />
+
+      <div id="chat-messages" class="message-container"></div>
+
+      <!-- Input container with the input and button -->
+      <div class="input-container">
+        <input id="chat-input" type="text" placeholder="Type a message..." />
+        <button class="send-btn" onclick="sendMessage()">
+          <img src="%PUBLIC_URL%/sent-icon.png" alt="Send" />
+        </button>
+      </div>
+    </div>
+
+    <!-- Link to chatbot.js that contains the chatbot response logic -->
+    <script src="%PUBLIC_URL%/chatbot.js"></script>
+
+    <script>
+      function toggleChat() {
+        var chatContainer = document.getElementById('chatbot-container');
+        chatContainer.style.display = chatContainer.style.display === 'none' || chatContainer.style.display === '' ? 'block' : 'none';
+      }
+  
+      var chatIcon = document.getElementById('chat-toggle-btn');
+      var isDragging = false, offsetX, offsetY;
+  
+      chatIcon.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        isDragging = true;
+        offsetX = e.clientX - chatIcon.getBoundingClientRect().left;
+        offsetY = e.clientY - chatIcon.getBoundingClientRect().top;
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', onMouseUp);
+      });
+  
+      function onMouseMove(e) {
+        if (isDragging) {
+          chatIcon.style.left = `${e.clientX - offsetX}px`;
+          chatIcon.style.top = `${e.clientY - offsetY}px`;
+          chatIcon.style.position = 'fixed';
+        }
+      }
+  
+      function onMouseUp() {
+        isDragging = false;
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+      }
+    </script>
+  </body>
+</html>
