@@ -73,7 +73,7 @@ async function sendMessage() {
 
     // API call to /api/chat
     try {
-        const response = await fetch("http://localhost:8080/api/chat", {
+        const response = await fetch("https://cerebrio-backend.onrender.com/api/chat", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ content })
