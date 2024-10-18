@@ -50,7 +50,7 @@ const RegisterPage = () => {
     e.preventDefault()
     e.stopPropagation()
 
-    const URL = `https://cerebrio-backend.onrender.com/api/register`
+    const URL = `http://localhost:8080/api/register`
 
     try {
         const response = await axios.post(URL,data)
