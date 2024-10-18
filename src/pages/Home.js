@@ -45,7 +45,7 @@ const Home = () => {
         token : localStorage.getItem('token')
       },
     })
-
+    console.log("token " + token);
     socketConnection.on('onlineUser',(data)=>{
       console.log(data)
       dispatch(setOnlineUser(data))
