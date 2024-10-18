@@ -39,7 +39,7 @@ const CheckPasswordPage = () => {
     e.preventDefault()
     e.stopPropagation()
 
-    const URL = `${process.env.REACT_APP_BACKEND_URL}/api/password`
+    const URL = `https://cerebrio-backend.onrender.com/api/password`;
 
     try {
         const response = await axios({
