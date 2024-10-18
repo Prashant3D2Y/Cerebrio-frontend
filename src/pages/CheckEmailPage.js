@@ -27,7 +27,7 @@ const CheckEmailPage = () => {
     e.preventDefault()
     e.stopPropagation()
 
-    const URL = `https://cerebrio-backend.onrender.com/api/email`;
+    const URL = `http://localhost:8080/api/email`;
 
     try {
         const response = await axios.post(URL,data)
